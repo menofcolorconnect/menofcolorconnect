@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Men Of Color Connect | Flight Booking</title>
+    <style>
+        /* Dark Mode Base Styles */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --primary-color: #1976d2;
+            --primary-hover: #1565c0;
+            --secondary-color: #ff6b00;
+            --secondary-hover: #e05d00;
+            --border-color: #333;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --success-color: #388e3c;
+            --warning-color: #f57c00;
+            --error-color: #d32f2f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .auth-buttons {
+            display: flex;
+        }
+
+        .auth-buttons button {
+            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 44px;
+        }
+
+        .auth-buttons .login {
+            background-color: transparent;
+            color: var(--primary-color);
+        }
+
+        .auth-buttons .signup {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .auth-buttons .login:hover {
+            background-color: rgba(25, 118, 210, 0.1);
+        }
+
+        .auth-buttons .signup:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Main Content Styles */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: linear-gradient(135deg, var(--primary-color), #0d47a1);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .search-container h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 0.8rem 2rem;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: white;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background-color: white;
+            border-radius: 3px;
+        }
+
+        #flight-search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input, 
+        .input-group select {
+            padding: 0.8rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+            color: #333;
+            min-height: 44px;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .swap-btn {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .swap-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .search-btn {
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            min-height: 44px;
+        }
+
+        .search-btn:hover {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        /* Deals Section */
+        .deals-section {
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .deals-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .deals-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .deal-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .deal-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .deal-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .deal-info {
+            padding: 1.5rem;
+        }
+
+        .deal-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .deal-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .deal-dates {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            margin-bottom: 3rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .results-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .filter-group select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-height: 44px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .checkbox-group input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .flight-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .flight-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.1);
+        }
+
+        .flight-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .airline-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .flight-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .airline-name {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .flight-route {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .flight-times {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .flight-time {
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--text-color);
+        }
+
+        .flight-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .flight-airport {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .flight-duration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            color: var(--text-secondary);
+        }
+
+        .flight-stops {
+            font-size: 0.8rem;
+            background-color: rgba(25, 118, 210, 0.1);
+            color: var(--primary-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        .flight-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .price-per-person {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .book-btn {
+            padding: 0.6rem 1.5rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 44px;
+        }
+
+        .book-btn:hover {
+            background-color: var(--secondary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Payment Modal Styles */
+        .payment-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .payment-content {
+            background-color: var(--card-bg);
+            margin: 20px auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            position: relative;
+            top: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .payment-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .payment-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .payment-close:hover {
+            color: var(--text-color);
+        }
+
+        .payment-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .payment-info strong {
+            color: var(--text-color);
+        }
+
+        .bitcoin-payment {
+            background-color: rgba(30, 30, 30, 0.5);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .bitcoin-address {
+            font-family: monospace;
+            background-color: var(--bg-color);
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            word-break: break-all;
+            border: 1px dashed var(--border-color);
+            color: var(--text-color);
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1rem;
+            background-color: white;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .payment-status {
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border-radius: 4px;
+            background-color: rgba(25, 118, 210, 0.1);
+            color: var(--primary-color);
+        }
+
+        .payment-timer {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .payment-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .payment-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 44px;
+        }
+
+        .payment-confirm {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .payment-confirm:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .payment-cancel {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .payment-cancel:hover {
+            background-color: #444;
+        }
+
+        /* Payment Verification */
+        .payment-verification {
+            display: none;
+            padding: 1rem;
+            background-color: rgba(56, 142, 60, 0.2);
+            color: #81c784;
+            border-radius: 4px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 20px auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            position: relative;
+            top: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .close-btn:hover {
+            color: var(--text-color);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .auth-form h2 {
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .auth-form input {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-height: 44px;
+        }
+
+        .auth-form button {
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            min-height: 44px;
+        }
+
+        .auth-form button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* My Trips Section */
+        .trips-section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            margin-bottom: 3rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .trips-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .trip-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .trip-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .trip-id {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .trip-date {
+            color: var(--text-secondary);
+        }
+
+        .trip-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .trip-flight {
+            flex: 1;
+        }
+
+        .trip-flight h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .trip-flight p {
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+        }
+
+        .trip-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            background-color: rgba(56, 142, 60, 0.2);
+            color: #81c784;
+        }
+
+        .status-pending {
+            background-color: rgba(245, 124, 0, 0.2);
+            color: #ffb74d;
+        }
+
+        .status-cancelled {
+            background-color: rgba(211, 47, 47, 0.2);
+            color: #e57373;
+        }
+
+        .trip-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .trip-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            min-height: 44px;
+        }
+
+        .pay-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .ticket-btn {
+            background-color: #0288d1;
+            color: white;
+        }
+
+        /* Admin Code Section */
+        .admin-code-section {
+            background-color: rgba(30, 30, 30, 0.5);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            margin-bottom: 3rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-code-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .admin-code-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .admin-code-form {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .admin-code-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-height: 44px;
+        }
+
+        .admin-code-btn {
+            padding: 0 1.5rem;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        .admin-code-btn:hover {
+            background-color: #2e7d32;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            margin-bottom: 3rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-info i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-height: 44px;
+        }
+
+        .contact-form textarea {
+            height: 150px;
+        }
+
+        .contact-form button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        .contact-form button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Passenger Info Section */
+        .passenger-info-section {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+            margin-bottom: 3rem;
+            display: none;
+            border: 1px solid var(--border-color);
+        }
+
+        .passenger-info-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .passenger-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .passenger-form input {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            min-height: 44px;
+        }
+
+        .passenger-form button {
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            min-height: 44px;
+        }
+
+        .passenger-form button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Ticket Modal */
+        .ticket-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .ticket-content {
+            background-color: var(--card-bg);
+            margin: 20px auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ticket-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .ticket-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .ticket-close:hover {
+            color: var(--text-color);
+        }
+
+        .ticket-body {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .ticket-info {
+            flex: 1;
+        }
+
+        .ticket-qr {
+            width: 150px;
+            height: 150px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+
+        .ticket-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .ticket-value {
+            color: var(--text-color);
+        }
+
+        .ticket-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .ticket-print {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        .ticket-print:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #111;
+            color: #aaa;
+            padding-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section p {
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-section i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: #aaa;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #000;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 0.5rem;
+            }
+            
+            .menu-toggle {
+                display: block;
+                order: 2;
+            }
+            
+            .nav-links {
+                display: none;
+                order: 3;
+                width: 100%;
+                flex-direction: column;
+                padding: 1rem 0;
+                margin: 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0.5rem 0;
+                margin-left: 0;
+            }
+            
+            .auth-buttons {
+                display: none;
+                order: 4;
+                width: 100%;
+                flex-direction: column;
+                margin-top: 1rem;
+            }
+            
+            .auth-buttons.active {
+                display: flex;
+            }
+            
+            .auth-buttons button {
+                margin: 0.5rem 0;
+                width: 100%;
+            }
+            
+            .logo {
+                order: 1;
+                flex: 1;
+            }
+            
+            .form-group {
+                flex-direction: column;
+            }
+            
+            .swap-btn {
+                top: 100%;
+                transform: translate(-50%, -50%);
+            }
+            
+            .swap-btn:hover {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            
+            .filters {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .flight-card {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: flex-start;
+            }
+            
+            .flight-price {
+                align-items: flex-start;
+                width: 100%;
+            }
+            
+            .book-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .payment-content,
+            .modal-content,
+            .ticket-content {
+                margin: 20px auto;
+                width: 95%;
+                top: 20px;
+            }
+
+            .ticket-body {
+                flex-direction: column;
+            }
+
+            .ticket-qr {
+                margin: 0 auto;
+            }
+
+            .trip-details {
+                flex-direction: column;
+            }
+            
+            .search-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .search-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                width: 100%;
+            }
+            
+            .flight-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .flight-route {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .payment-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .payment-btn {
+                width: 100%;
+            }
+
+            .trip-actions {
+                flex-direction: column;
+            }
+
+            .trip-btn {
+                width: 100%;
+            }
+            
+            .price-amount {
+                font-size: 1.3rem;
+            }
+            
+            .deals-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .footer-section {
+                margin-bottom: 1rem;
+            }
+            
+            .input-group input, 
+            .input-group select {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .search-btn {
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- QR Code library -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Men Of Color Connect</div>
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-section="flights">Flights</a></li>
+                <li><a href="#" class="nav-link" data-section="deals">Deals</a></li>
+                <li><a href="#" class="nav-link" data-section="trips">My Trips</a></li>
+                <li><a href="#" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons" id="auth-buttons">
+                <button class="login" id="login-btn">Login</button>
+                <button class="signup" id="signup-btn">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section - Only shows search form -->
+        <section class="search-section" id="home-section">
+            <div class="search-container">
+                <h1>Find and book your perfect flight</h1>
+                <div class="tabs">
+                    <button class="tab active" data-tab="round-trip">Round Trip</button>
+                    <button class="tab" data-tab="one-way">One Way</button>
+                    <button class="tab" data-tab="multi-city">Multi-City</button>
+                </div>
+                
+                <form id="flight-search-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label for="from">From</label>
+                            <input type="text" id="from" placeholder="City or Airport" required>
+                        </div>
+                        
+                        <button type="button" class="swap-btn" id="swap-locations">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                        
+                        <div class="input-group">
+                            <label for="to">To</label>
+                            <input type="text" id="to" placeholder="City or Airport" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label for="departure">Departure</label>
+                            <input type="date" id="departure" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="return">Return</label>
+                            <input type="date" id="return">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label for="passengers">Passengers</label>
+                            <select id="passengers">
+                                <option value="1">1 Adult</option>
+                                <option value="2">2 Adults</option>
+                                <option value="3">3 Adults</option>
+                                <option value="4">4 Adults</option>
+                                <option value="family">Family (2 Adults, 2 Children)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="class">Class</label>
+                            <select id="class">
+                                <option value="economy">Economy</option>
+                                <option value="premium">Premium Economy</option>
+                                <option value="business">Business</option>
+                                <option value="first">First Class</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="search-btn">Search Flights</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Deals Section - Only shows when Deals nav link is clicked -->
+        <section class="deals-section" id="deals-section">
+            <h2>Today's Best Deals</h2>
+            <div class="deals-container">
+                <div class="deal-card">
+                    <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');">
+                        <span class="deal-badge">HOT DEAL</span>
+                    </div>
+                    <div class="deal-info">
+                        <h3>New York to London</h3>
+                        <p class="deal-price">From $399</p>
+                        <p class="deal-dates">May - Aug 2025</p>
+                    </div>
+                </div>
+                
+                <div class="deal-card">
+                    <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1503917988258-f87a78e3c995?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');">
+                        <span class="deal-badge">LIMITED</span>
+                    </div>
+                    <div class="deal-info">
+                        <h3>Los Angeles to Tokyo</h3>
+                        <p class="deal-price">From $799</p>
+                        <p class="deal-dates">Jun - Sep 2025</p>
+                    </div>
+                </div>
+                
+                <div class="deal-card">
+                    <div class="deal-image" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');">
+                        <span class="deal-badge">NEW</span>
+                    </div>
+                    <div class="deal-info">
+                        <h3>Chicago to Paris</h3>
+                        <p class="deal-price">From $459</p>
+                        <p class="deal-dates">Jul - Oct 2025</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flights Results Section - Only shows when searching or clicking Flights nav link -->
+        <section class="results-section" id="results-section">
+            <h2>Available Flights</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sort-by">
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="duration-asc">Duration (Shortest)</option>
+                        <option value="departure-asc">Departure (Earliest)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Stops:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="stops" value="0" checked> Non-stop</label>
+                        <label><input type="checkbox" name="stops" value="1" checked> 1 Stop</label>
+                        <label><input type="checkbox" name="stops" value="2" checked> 2+ Stops</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Airlines:</label>
+                    <div class="checkbox-group" id="airlines-filter">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-container" id="results-container">
+                <!-- Flight results will be populated here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Passenger Info Section - Shows before payment -->
+        <section class="passenger-info-section" id="passenger-info-section">
+            <h2>Passenger Information</h2>
+            <form class="passenger-form" id="passenger-form">
+                <input type="text" id="passenger-name" placeholder="Full Name (as it appears on passport)" required>
+                <input type="email" id="passenger-email" placeholder="Email Address" required>
+                <input type="tel" id="passenger-phone" placeholder="Phone Number" required>
+                <button type="submit">Continue to Payment</button>
+            </form>
+        </section>
+
+        <!-- My Trips Section -->
+        <section class="trips-section" id="trips-section">
+            <h2>My Trips</h2>
+            
+            <!-- Admin Code Section -->
+            <div class="admin-code-section" id="admin-code-section">
+                <h3>Admin Access Code</h3>
+                <p>Enter your 12-digit admin code to confirm payment and access flight options</p>
+                <form class="admin-code-form" id="admin-code-form">
+                    <input type="text" class="admin-code-input" id="admin-code" placeholder="Enter 12-digit code" maxlength="12" required>
+                    <button type="submit" class="admin-code-btn">Apply Code</button>
+                </form>
+                <div id="code-feedback" class="payment-verification"></div>
+            </div>
+            
+            <div id="trips-container">
+                <!-- Trips will be populated here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section" id="contact-section">
+            <h2>Contact Us</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get in Touch</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Aviation Avenue, Suite 500<br>Queens, NY 11430</p>
+                    <p><i class="fas fa-phone"></i> +1 (800) MOCC-FLY (662-2359)</p>
+                    <p><i class="fas fa-envelope"></i> menofcolorconnectagency@gmail.com</p>
+                    <p><i class="fas fa-clock"></i> Customer Support Hours:<br>Monday-Friday: 8AM-8PM EST<br>Saturday-Sunday: 9AM-5PM EST</p>
+                    
+                    <h3 style="margin-top: 2rem;">Our Mission</h3>
+                    <p>Men Of Color Connect Flight Agency is dedicated to providing exceptional travel experiences while creating opportunities for people of color in the aviation industry.</p>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="text" placeholder="Subject">
+                        <textarea placeholder="Your Message" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <form class="auth-form" id="login-form">
+                <h2>Login to Your Account</h2>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div class="form-footer">
+                    Don't have an account? <a href="#" id="show-signup">Sign up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signup-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <form class="auth-form" id="signup-form">
+                <h2>Create Your Account</h2>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+                <div class="form-footer">
+                    Already have an account? <a href="#" id="show-login">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-content">
+            <div class="payment-header">
+                <h2>Complete Your Booking</h2>
+                <span class="payment-close">&times;</span>
+            </div>
+            
+            <div class="payment-details">
+                <div class="payment-info">
+                    <span>Passenger:</span>
+                    <strong id="payment-passenger">John Doe</strong>
+                </div>
+                <div class="payment-info">
+                    <span>Flight:</span>
+                    <strong id="payment-flight">New York (JFK) to Los Angeles (LAX)</strong>
+                </div>
+                <div class="payment-info">
+                    <span>Departure:</span>
+                    <strong id="payment-departure">May 15, 2025 - 10:00 AM</strong>
+                </div>
+                <div class="payment-info">
+                    <span>Passengers:</span>
+                    <strong id="payment-passengers">2 Adults</strong>
+                </div>
+                <div class="payment-info">
+                    <span>Class:</span>
+                    <strong id="payment-class">Economy</strong>
+                </div>
+                <div class="payment-info">
+                    <span>Total Amount:</span>
+                    <strong id="payment-amount">$598.00</strong>
+                </div>
+            </div>
+            
+            <div class="bitcoin-payment">
+                <h3>Pay with Bitcoin</h3>
+                <p>Send any amount to the address below</p>
+                <div class="qr-code" id="qr-code">
+                    <!-- QR code will be generated here -->
+                </div>
+                <div class="bitcoin-address" id="bitcoin-address">
+                    bc1q20akp265qemjcdwewflzs7yxmsnna5hv55pzh9
+                </div>
+                <p>Payment must be completed within <span class="payment-timer" id="payment-timer">15:00</span> minutes</p>
+                
+                <!-- Transaction ID Input -->
+                <div class="input-group" style="margin-top: 1rem;">
+                    <label for="transaction-id">Bitcoin Transaction ID:</label>
+                    <input type="text" id="transaction-id" placeholder="Enter transaction ID (64-character hash)" style="width: 100%;">
+                </div>
+                
+                <div class="payment-status" id="payment-status">
+                    <i class="fas fa-circle-notch fa-spin"></i> Waiting for payment...
+                </div>
+                
+                <div id="payment-verification" class="payment-verification" style="display: none;">
+                    <!-- Verification status will be shown here -->
+                </div>
+            </div>
+            
+            <div class="payment-actions">
+                <button class="payment-btn payment-cancel" id="payment-cancel">Cancel</button>
+                <button class="payment-btn payment-confirm" id="payment-confirm">Verify Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Modal -->
+    <div class="ticket-modal" id="ticket-modal">
+        <div class="ticket-content">
+            <div class="ticket-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <img id="ticket-airline-logo" src="" alt="Airline Logo" style="height: 40px; width: auto;">
+                    <h2>Flight Ticket</h2>
+                </div>
+                <span class="ticket-close">&times;</span>
+            </div>
+            
+            <div class="ticket-body">
+                <div class="ticket-info">
+                    <div class="ticket-row">
+                        <span class="ticket-label">Passenger Name:</span>
+                        <span class="ticket-value" id="ticket-name">John Doe</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Booking Reference:</span>
+                        <span class="ticket-value" id="ticket-id">MOCC123456</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Flight:</span>
+                        <span class="ticket-value" id="ticket-flight">New York (JFK) to Los Angeles (LAX)</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Airline:</span>
+                        <span class="ticket-value" id="ticket-airline">American Airlines</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Departure:</span>
+                        <span class="ticket-value" id="ticket-departure">May 15, 2025 - 10:00 AM</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Arrival:</span>
+                        <span class="ticket-value" id="ticket-arrival">May 15, 2025 - 2:00 PM</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Flight Number:</span>
+                        <span class="ticket-value" id="ticket-flight-number">AA 123</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Class:</span>
+                        <span class="ticket-value" id="ticket-class">Economy</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Seat:</span>
+                        <span class="ticket-value" id="ticket-seat">24B</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Gate:</span>
+                        <span class="ticket-value" id="ticket-gate">B12</span>
+                    </div>
+                    <div class="ticket-row">
+                        <span class="ticket-label">Status:</span>
+                        <span class="ticket-value" id="ticket-status">Confirmed</span>
+                    </div>
+                </div>
+                
+                <div class="ticket-qr" id="ticket-qr">
+                    <!-- QR code will be generated here -->
+                </div>
+            </div>
+            
+            <div class="ticket-actions">
+                <button class="ticket-print" id="ticket-print">
+                    <i class="fas fa-print"></i> Print Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Men Of Color Connect</h3>
+                <p>Your trusted partner for flight bookings. We offer the best prices and customer service in the industry while promoting diversity in aviation.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-section="flights">Flights</a></li>
+                    <li><a href="#" class="nav-link" data-section="deals">Deals</a></li>
+                    <li><a href="#" class="nav-link" data-section="trips">My Trips</a></li>
+                    <li><a href="#" class="nav-link" data-section="contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-phone"></i> +1 (800) MOCC-FLY</p>
+                <p><i class="fas fa-envelope"></i> menofcolorconnectagency@gmail.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Aviation Avenue, Queens, NY 11430</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Men Of Color Connect Flight Agency. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Current user state
+            let currentUser = null;
+            let users = JSON.parse(localStorage.getItem('mocc_users')) || [];
+            let userTrips = JSON.parse(localStorage.getItem('mocc_trips')) || [];
+            let pendingPayment = null;
+            let currentTrip = null;
+            
+            // Generate admin codes (only American and United airlines as requested)
+            const adminCodes = JSON.parse(localStorage.getItem('mocc_admin_codes')) || [{
+                code: generateAdminCode(),
+                used: false
+            }];
+            
+            // Generate a random 12-digit admin code
+            function generateAdminCode() {
+                return 'MOCC' + Math.floor(10000000 + Math.random() * 90000000);
+            }
+            
+            // Only these two airlines are available as requested
+            const airlines = [
+                { 
+                    id: 'american', 
+                    name: 'American Airlines', 
+                    logo: 'https://logos-world.net/wp-content/uploads/2020/11/American-Airlines-Logo.png' 
+                },
+                { 
+                    id: 'united', 
+                    name: 'United Airlines', 
+                    logo: 'https://logos-world.net/wp-content/uploads/2020/11/United-Airlines-Logo.png' 
+                }
+            ];
+
+            // Initialize the page
+            init();
+
+            function init() {
+                setupEventListeners();
+                updateAuthState();
+                
+                // Store admin codes if not already stored
+                if (!localStorage.getItem('mocc_admin_codes')) {
+                    localStorage.setItem('mocc_admin_codes', JSON.stringify(adminCodes));
+                }
+                
+                // Populate airlines filter
+                const airlinesFilter = document.getElementById('airlines-filter');
+                airlines.forEach(airline => {
+                    airlinesFilter.innerHTML += `
+                        <label>
+                            <input type="checkbox" name="airline" value="${airline.id}" checked>
+                            ${airline.name}
+                        </label>
+                    `;
+                });
+            }
+
+            function setupEventListeners() {
+                // Mobile menu toggle
+                document.getElementById('menu-toggle').addEventListener('click', function() {
+                    document.getElementById('nav-links').classList.toggle('active');
+                    document.getElementById('auth-buttons').classList.toggle('active');
+                });
+                
+                // Tab switching functionality
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        if (this.dataset.tab === 'one-way') {
+                            document.getElementById('return').disabled = true;
+                        } else {
+                            document.getElementById('return').disabled = false;
+                        }
+                    });
+                });
+                
+                // Swap locations button
+                document.getElementById('swap-locations').addEventListener('click', function() {
+                    const from = document.getElementById('from');
+                    const to = document.getElementById('to');
+                    const temp = from.value;
+                    from.value = to.value;
+                    to.value = temp;
+                });
+                
+                // Set minimum date for departure (today)
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                const todayStr = `${yyyy}-${mm}-${dd}`;
+                document.getElementById('departure').min = todayStr;
+                
+                // Update return date min based on departure date
+                document.getElementById('departure').addEventListener('change', function() {
+                    document.getElementById('return').min = this.value;
+                    if (document.getElementById('return').value && document.getElementById('return').value < this.value) {
+                        document.getElementById('return').value = this.value;
+                    }
+                });
+                
+                // Flight search form submission
+                document.getElementById('flight-search-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    searchFlights();
+                });
+                
+                // Sort and filter functionality
+                document.getElementById('sort-by').addEventListener('change', function() {
+                    sortFlights(this.value);
+                });
+                
+                document.querySelectorAll('input[name="stops"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', filterFlights);
+                });
+
+                document.querySelectorAll('input[name="airline"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', filterFlights);
+                });
+
+                // Navigation functionality
+                const navLinks = document.querySelectorAll('.nav-link');
+                const sections = {
+                    'home': document.getElementById('home-section'),
+                    'flights': document.getElementById('results-section'),
+                    'deals': document.getElementById('deals-section'),
+                    'trips': document.getElementById('trips-section'),
+                    'contact': document.getElementById('contact-section')
+                };
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const section = this.dataset.section;
+                        
+                        // Hide all sections
+                        Object.values(sections).forEach(sec => {
+                            if (sec) sec.style.display = 'none';
+                        });
+                        
+                        // Show selected section
+                        if (sections[section]) {
+                            sections[section].style.display = 'block';
+                            
+                            // Special handling for trips section
+                            if (section === 'trips') {
+                                if (!currentUser) {
+                                    showModal('login-modal');
+                                    return;
+                                }
+                                displayUserTrips();
+                            }
+                            
+                            // Special handling for flights section
+                            if (section === 'flights') {
+                                if (!currentUser) {
+                                    showModal('login-modal');
+                                    return;
+                                }
+                                // You might want to show some default flights here
+                            }
+                        }
+                    });
+                });
+
+                // Modal functionality
+                const loginBtn = document.getElementById('login-btn');
+                const signupBtn = document.getElementById('signup-btn');
+                const loginModal = document.getElementById('login-modal');
+                const signupModal = document.getElementById('signup-modal');
+                const paymentModal = document.getElementById('payment-modal');
+                const ticketModal = document.getElementById('ticket-modal');
+                const closeBtns = document.querySelectorAll('.close-btn, .payment-close, .ticket-close');
+                const showSignup = document.getElementById('show-signup');
+                const showLogin = document.getElementById('show-login');
+
+                loginBtn.addEventListener('click', () => showModal('login-modal'));
+                signupBtn.addEventListener('click', () => showModal('signup-modal'));
+
+                closeBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const modal = this.closest('.modal, .payment-modal, .ticket-modal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
+                });
+
+                showSignup.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideModal('login-modal');
+                    showModal('signup-modal');
+                });
+
+                showLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideModal('signup-modal');
+                    showModal('login-modal');
+                });
+
+                // Close modal when clicking outside
+                window.addEventListener('click', function(e) {
+                    if (e.target === loginModal) hideModal('login-modal');
+                    if (e.target === signupModal) hideModal('signup-modal');
+                    if (e.target === paymentModal) hideModal('payment-modal');
+                    if (e.target === ticketModal) hideModal('ticket-modal');
+                });
+
+                // Login form submission
+                document.getElementById('login-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    const password = this.querySelector('input[type="password"]').value;
+                    
+                    // Find user in database
+                    const user = users.find(u => u.email === email && u.password === password);
+                    
+                    if (user) {
+                        currentUser = {
+                            name: user.name,
+                            email: user.email
+                        };
+                        localStorage.setItem('mocc_currentUser', JSON.stringify(currentUser));
+                        
+                        alert(`Welcome back, ${user.name}!`);
+                        hideModal('login-modal');
+                        updateAuthState();
+                    } else {
+                        alert('Invalid email or password');
+                    }
+                });
+
+                // Signup form submission
+                document.getElementById('signup-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const name = this.querySelector('input[type="text"]').value;
+                    const email = this.querySelector('input[type="email"]').value;
+                    const password = this.querySelectorAll('input[type="password"]')[0].value;
+                    const confirmPassword = this.querySelectorAll('input[type="password"]')[1].value;
+                    
+                    // Validation
+                    if (!name || !email || !password || !confirmPassword) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        alert('Passwords do not match');
+                        return;
+                    }
+                    
+                    // Check if user already exists
+                    if (users.some(u => u.email === email)) {
+                        alert('An account with this email already exists');
+                        return;
+                    }
+                    
+                    // Create new user
+                    const newUser = { name, email, password };
+                    users.push(newUser);
+                    localStorage.setItem('mocc_users', JSON.stringify(users));
+                    
+                    currentUser = {
+                        name: name,
+                        email: email
+                    };
+                    localStorage.setItem('mocc_currentUser', JSON.stringify(currentUser));
+                    
+                    alert('Account created successfully!');
+                    hideModal('signup-modal');
+                    updateAuthState();
+                });
+
+                // Passenger info form submission
+                document.getElementById('passenger-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const passengerName = document.getElementById('passenger-name').value;
+                    const passengerEmail = document.getElementById('passenger-email').value;
+                    const passengerPhone = document.getElementById('passenger-phone').value;
+                    
+                    if (!passengerName || !passengerEmail || !passengerPhone) {
+                        alert('Please fill in all passenger details');
+                        return;
+                    }
+                    
+                    // Update current trip with passenger info
+                    if (currentTrip) {
+                        currentTrip.passengerName = passengerName;
+                        currentTrip.passengerEmail = passengerEmail;
+                        currentTrip.passengerPhone = passengerPhone;
+                        
+                        // Show payment modal
+                        showPaymentModal(currentTrip);
+                    }
+                });
+
+                // Contact form submission
+                document.getElementById('contact-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! We will get back to you soon.');
+                    this.reset();
+                });
+
+                // Admin code form submission
+                document.getElementById('admin-code-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const codeInput = document.getElementById('admin-code').value.trim();
+                    const feedback = document.getElementById('code-feedback');
+                    
+                    // Find the trip with pending payment
+                    const pendingTrip = userTrips.find(trip => 
+                        trip.userEmail === currentUser?.email && 
+                        trip.status === 'Pending Payment'
+                    );
+                    
+                    if (!pendingTrip) {
+                        feedback.textContent = 'No pending payment found';
+                        feedback.style.display = 'block';
+                        return;
+                    }
+                    
+                    // Check if code is valid
+                    const validCode = adminCodes.find(code => 
+                        code.code === codeInput && !code.used
+                    );
+                    
+                    if (validCode) {
+                        // Mark code as used
+                        validCode.used = true;
+                        localStorage.setItem('mocc_admin_codes', JSON.stringify(adminCodes));
+                        
+                        // Update trip status
+                        pendingTrip.status = 'Confirmed';
+                        pendingTrip.paymentMethod = 'Admin Code';
+                        pendingTrip.paymentDate = new Date().toLocaleDateString();
+                        localStorage.setItem('mocc_trips', JSON.stringify(userTrips));
+                        
+                        feedback.textContent = 'Payment confirmed! Your booking is now complete.';
+                        feedback.style.display = 'block';
+                        
+                        // Update the trips display
+                        displayUserTrips();
+                        
+                        // Clear the input
+                        document.getElementById('admin-code').value = '';
+                        
+                        // Show the ticket
+                        setTimeout(() => {
+                            showTicket(pendingTrip);
+                        }, 1500);
+                    } else {
+                        feedback.textContent = 'Invalid or already used admin code';
+                        feedback.style.display = 'block';
+                    }
+                });
+
+                // Payment confirm button with Bitcoin verification
+                document.getElementById('payment-confirm').addEventListener('click', async function() {
+                    if (!pendingPayment) return;
+                    
+                    const transactionId = document.getElementById('transaction-id').value.trim();
+                    const verificationElement = document.getElementById('payment-verification');
+                    const paymentStatus = document.getElementById('payment-status');
+                    
+                    if (!transactionId) {
+                        verificationElement.textContent = 'Please enter a Bitcoin transaction ID';
+                        verificationElement.style.display = 'block';
+                        verificationElement.style.backgroundColor = 'rgba(211, 47, 47, 0.2)';
+                        verificationElement.style.color = '#e57373';
+                        return;
+                    }
+                    
+                    if (transactionId.length !== 64 || !/^[a-f0-9]+$/i.test(transactionId)) {
+                        verificationElement.textContent = 'Invalid transaction ID format (must be 64-character hexadecimal)';
+                        verificationElement.style.display = 'block';
+                        verificationElement.style.backgroundColor = 'rgba(211, 47, 47, 0.2)';
+                        verificationElement.style.color = '#e57373';
+                        return;
+                    }
+                    
+                    paymentStatus.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Verifying Bitcoin transaction...';
+                    verificationElement.style.display = 'none';
+                    
+                    try {
+                        // Verify the Bitcoin transaction using Blockstream API
+                        const isVerified = await verifyBitcoinTransaction(
+                            document.getElementById('bitcoin-address').textContent.trim(),
+                            transactionId
+                        );
+                        
+                        if (isVerified) {
+                            paymentStatus.innerHTML = '<i class="fas fa-check-circle"></i> Payment verified successfully!';
+                            
+                            // Update the trip status
+                            const tripIndex = userTrips.findIndex(t => t.id === pendingPayment.tripId);
+                            if (tripIndex !== -1) {
+                                userTrips[tripIndex].status = 'Confirmed';
+                                userTrips[tripIndex].paymentMethod = 'Bitcoin';
+                                userTrips[tripIndex].paymentDate = new Date().toLocaleDateString();
+                                userTrips[tripIndex].transactionId = transactionId;
+                                localStorage.setItem('mocc_trips', JSON.stringify(userTrips));
+                                
+                                verificationElement.textContent = 'Bitcoin payment successfully verified!';
+                                verificationElement.style.display = 'block';
+                                verificationElement.style.backgroundColor = 'rgba(56, 142, 60, 0.2)';
+                                verificationElement.style.color = '#81c784';
+                                
+                                // Show the ticket
+                                setTimeout(() => {
+                                    hideModal('payment-modal');
+                                    showTicket(userTrips[tripIndex]);
+                                }, 1500);
+                            }
+                        } else {
+                            paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i> Payment verification failed';
+                            verificationElement.textContent = 'Could not verify payment. Please ensure the transaction ID is correct and payment was sent to the correct address.';
+                            verificationElement.style.display = 'block';
+                            verificationElement.style.backgroundColor = 'rgba(211, 47, 47, 0.2)';
+                            verificationElement.style.color = '#e57373';
+                        }
+                    } catch (error) {
+                        console.error('Error verifying payment:', error);
+                        paymentStatus.innerHTML = '<i class="fas fa-times-circle"></i> Verification error';
+                        verificationElement.textContent = 'Error verifying payment. Please try again later.';
+                        verificationElement.style.display = 'block';
+                        verificationElement.style.backgroundColor = 'rgba(211, 47, 47, 0.2)';
+                        verificationElement.style.color = '#e57373';
+                    }
+                });
+
+                // Payment cancel button
+                document.getElementById('payment-cancel').addEventListener('click', function() {
+                    hideModal('payment-modal');
+                    pendingPayment = null;
+                });
+
+                // Print ticket button
+                document.getElementById('ticket-print').addEventListener('click', function() {
+                    window.print();
+                });
+            }
+
+            function showModal(modalId) {
+                // Hide all modals first
+                document.querySelectorAll('.modal, .payment-modal, .ticket-modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+                
+                // Show the requested modal
+                const modal = document.getElementById(modalId);
+                modal.style.display = 'block';
+                
+                // Scroll to the modal
+                modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function hideModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            // Update authentication state in UI
+            function updateAuthState() {
+                // Check if user is logged in from localStorage
+                const storedUser = JSON.parse(localStorage.getItem('mocc_currentUser'));
+                if (storedUser) {
+                    currentUser = storedUser;
+                }
+                
+                if (currentUser) {
+                    document.querySelector('.auth-buttons').innerHTML = `
+                        <span style="margin-right: 1rem;">Hi, ${currentUser.name}</span>
+                        <button class="logout">Logout</button>
+                    `;
+                    document.querySelector('.logout').addEventListener('click', logout);
+                } else {
+                    document.querySelector('.auth-buttons').innerHTML = `
+                        <button class="login" id="login-btn">Login</button>
+                        <button class="signup" id="signup-btn">Sign Up</button>
+                    `;
+                    document.querySelector('.login').addEventListener('click', () => showModal('login-modal'));
+                    document.querySelector('.signup').addEventListener('click', () => showModal('signup-modal'));
+                }
+            }
+
+            // Logout function
+            function logout() {
+                currentUser = null;
+                localStorage.removeItem('mocc_currentUser');
+                updateAuthState();
+                alert('You have been logged out');
+            }
+
+            // Search flights function
+            function searchFlights() {
+                if (!currentUser) {
+                    showModal('login-modal');
+                    return;
+                }
+                
+                const from = document.getElementById('from').value;
+                const to = document.getElementById('to').value;
+                const departure = document.getElementById('departure').value;
+                const returnDate = document.getElementById('return').value;
+                const passengers = document.getElementById('passengers').value;
+                const flightClass = document.getElementById('class').value;
+                
+                if (!from || !to || !departure) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                // Generate some random flight results
+                const resultsContainer = document.getElementById('results-container');
+                resultsContainer.innerHTML = '';
+                
+                // Show the results section
+                document.getElementById('home-section').style.display = 'none';
+                document.getElementById('results-section').style.display = 'block';
+                
+                // Generate flights for both American and United Airlines
+                airlines.forEach(airline => {
+                    // Generate 2-4 flights per airline
+                    const flightCount = 2 + Math.floor(Math.random() * 3);
+                    
+                    for (let i = 0; i < flightCount; i++) {
+                        const flightNumber = airline.id === 'american' ? 
+                            'AA' + (1000 + Math.floor(Math.random() * 9000)) : 
+                            'UA' + (1000 + Math.floor(Math.random() * 9000));
+                        
+                        const departureTime = new Date(departure);
+                        departureTime.setHours(6 + Math.floor(Math.random() * 12));
+                        departureTime.setMinutes(Math.floor(Math.random() * 12) * 5);
+                        
+                        const durationHours = 1 + Math.floor(Math.random() * 8);
+                        const durationMinutes = Math.floor(Math.random() * 60);
+                        const arrivalTime = new Date(departureTime.getTime() + 
+                            (durationHours * 60 * 60 * 1000) + 
+                            (durationMinutes * 60 * 1000));
+                        
+                        // Base price based on class and distance
+                        let basePrice = 100 + Math.floor(Math.random() * 400);
+                        if (flightClass === 'premium') basePrice *= 1.5;
+                        if (flightClass === 'business') basePrice *= 2;
+                        if (flightClass === 'first') basePrice *= 3;
+                        
+                        // Adjust for passengers
+                        let totalPrice = basePrice;
+                        if (passengers === '2') totalPrice *= 2;
+                        if (passengers === '3') totalPrice *= 3;
+                        if (passengers === '4') totalPrice *= 4;
+                        if (passengers === 'family') totalPrice = basePrice * 2 + (basePrice * 0.7 * 2);
+                        
+                        // Random stops (0, 1, or 2)
+                        const stops = Math.floor(Math.random() * 3);
+                        
+                        const flightCard = document.createElement('div');
+                        flightCard.className = 'flight-card';
+                        flightCard.dataset.airline = airline.id;
+                        flightCard.dataset.stops = stops;
+                        flightCard.dataset.price = totalPrice;
+                        flightCard.dataset.duration = durationHours * 60 + durationMinutes;
+                        flightCard.dataset.departure = departureTime.getTime();
+                        
+                        flightCard.innerHTML = `
+                            <div class="flight-info">
+                                <img src="${airline.logo}" alt="${airline.name}" class="airline-logo">
+                                <div class="flight-details">
+                                    <span class="airline-name">${airline.name}</span>
+                                    <div class="flight-route">
+                                        <div class="flight-times">
+                                            <span class="flight-time">${departureTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                            <span class="flight-date">${departureTime.toLocaleDateString()}</span>
+                                            <span class="flight-airport">${from}</span>
+                                        </div>
+                                        <div class="flight-duration">
+                                            <span>${durationHours}h ${durationMinutes}m</span>
+                                            <span class="flight-stops">${stops === 0 ? 'Non-stop' : stops === 1 ? '1 Stop' : '2+ Stops'}</span>
+                                        </div>
+                                        <div class="flight-times">
+                                            <span class="flight-time">${arrivalTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                            <span class="flight-date">${arrivalTime.toLocaleDateString()}</span>
+                                            <span class="flight-airport">${to}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flight-price">
+                                <span class="price-amount">$${totalPrice.toFixed(2)}</span>
+                                <span class="price-per-person">${passengers === '1' ? 'Total' : 'Total for all passengers'}</span>
+                                <button class="book-btn" data-flight-number="${flightNumber}" 
+                                    data-airline="${airline.name}" 
+                                    data-departure="${departureTime.toLocaleString()}" 
+                                    data-arrival="${arrivalTime.toLocaleString()}"
+                                    data-price="${totalPrice}">
+                                    Book Now
+                                </button>
+                            </div>
+                        `;
+                        
+                        resultsContainer.appendChild(flightCard);
+                    }
+                });
+                
+                // Add event listeners to book buttons
+                document.querySelectorAll('.book-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const flightNumber = this.dataset.flightNumber;
+                        const airline = this.dataset.airline;
+                        const departure = this.dataset.departure;
+                        const arrival = this.dataset.arrival;
+                        const price = parseFloat(this.dataset.price);
+                        
+                        // Create trip object but don't save yet (wait for passenger info)
+                        currentTrip = {
+                            flightNumber: flightNumber,
+                            airline: airline,
+                            from: from,
+                            to: to,
+                            departure: departure,
+                            return: returnDate,
+                            arrival: arrival,
+                            passengers: passengers,
+                            class: flightClass,
+                            price: price
+                        };
+                        
+                        // Show passenger info form
+                        document.getElementById('home-section').style.display = 'none';
+                        document.getElementById('results-section').style.display = 'none';
+                        document.getElementById('passenger-info-section').style.display = 'block';
+                    });
+                });
+                
+                // Sort flights by default (price low to high)
+                sortFlights('price-asc');
+            }
+
+            // Show payment modal
+            function showPaymentModal(trip) {
+                // Generate a unique trip ID
+                const tripId = 'MOCC' + Math.floor(100000 + Math.random() * 900000);
+                const today = new Date();
+                
+                // Complete the trip object with all details
+                const completeTrip = {
+                    id: tripId,
+                    userEmail: currentUser.email,
+                    date: today.toLocaleDateString(),
+                    status: 'Pending Payment',
+                    seat: Math.floor(Math.random() * 30 + 1) + String.fromCharCode(65 + Math.floor(Math.random() * 6)),
+                    gate: ['A', 'B', 'C'][Math.floor(Math.random() * 3)] + (10 + Math.floor(Math.random() * 20)),
+                    ...trip
+                };
+                
+                // Add to trips array
+                userTrips.push(completeTrip);
+                localStorage.setItem('mocc_trips', JSON.stringify(userTrips));
+                
+                // Set pending payment
+                pendingPayment = {
+                    tripId: completeTrip.id,
+                    amount: completeTrip.price,
+                    timestamp: new Date().getTime()
+                };
+                
+                // Update payment modal content
+                document.getElementById('payment-passenger').textContent = completeTrip.passengerName;
+                document.getElementById('payment-flight').textContent = `${completeTrip.from} to ${completeTrip.to}`;
+                document.getElementById('payment-departure').textContent = completeTrip.departure;
+                document.getElementById('payment-passengers').textContent = 
+                    completeTrip.passengers === '1' ? '1 Adult' : 
+                    completeTrip.passengers === '2' ? '2 Adults' : 
+                    completeTrip.passengers === '3' ? '3 Adults' : 
+                    completeTrip.passengers === '4' ? '4 Adults' : 'Family (2 Adults, 2 Children)';
+                document.getElementById('payment-class').textContent = 
+                    completeTrip.class === 'economy' ? 'Economy' : 
+                    completeTrip.class === 'premium' ? 'Premium Economy' : 
+                    completeTrip.class === 'business' ? 'Business' : 'First Class';
+                document.getElementById('payment-amount').textContent = `$${completeTrip.price.toFixed(2)}`;
+                
+                // Generate QR code for payment
+                const qrCodeElement = document.getElementById('qr-code');
+                qrCodeElement.innerHTML = ''; // Clear previous QR code
+                new QRCode(qrCodeElement, {
+                    text: `bitcoin:${document.getElementById('bitcoin-address').textContent}?amount=${completeTrip.price}`,
+                    width: 150,
+                    height: 150
+                });
+                
+                // Reset payment status
+                document.getElementById('payment-status').innerHTML = 
+                    '<i class="fas fa-circle-notch fa-spin"></i> Waiting for payment...';
+                
+                // Clear any previous verification messages
+                document.getElementById('payment-verification').style.display = 'none';
+                document.getElementById('transaction-id').value = '';
+                
+                // Start payment timer (15 minutes)
+                let minutes = 15;
+                let seconds = 0;
+                const timerElement = document.getElementById('payment-timer');
+                
+                const timer = setInterval(() => {
+                    if (seconds === 0) {
+                        if (minutes === 0) {
+                            clearInterval(timer);
+                            timerElement.textContent = '00:00';
+                            document.getElementById('payment-status').innerHTML = 
+                                '<i class="fas fa-times-circle"></i> Payment time expired';
+                            return;
+                        }
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        seconds--;
+                    }
+                    
+                    timerElement.textContent = 
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+                
+                // Show the modal
+                showModal('payment-modal');
+                
+                // Clear timer when modal is closed
+                document.querySelector('.payment-close').addEventListener('click', function() {
+                    clearInterval(timer);
+                });
+            }
+
+            // Show ticket modal
+            function showTicket(trip) {
+                // Find the airline logo
+                const airline = airlines.find(a => a.name === trip.airline);
+                const airlineLogo = airline ? airline.logo : '';
+                
+                // Update ticket content
+                document.getElementById('ticket-airline-logo').src = airlineLogo;
+                document.getElementById('ticket-name').textContent = trip.passengerName;
+                document.getElementById('ticket-id').textContent = trip.id;
+                document.getElementById('ticket-flight').textContent = `${trip.from} to ${trip.to}`;
+                document.getElementById('ticket-airline').textContent = trip.airline;
+                document.getElementById('ticket-departure').textContent = trip.departure;
+                document.getElementById('ticket-arrival').textContent = trip.arrival;
+                document.getElementById('ticket-flight-number').textContent = trip.flightNumber;
+                document.getElementById('ticket-class').textContent = 
+                    trip.class === 'economy' ? 'Economy' : 
+                    trip.class === 'premium' ? 'Premium Economy' : 
+                    trip.class === 'business' ? 'Business' : 'First Class';
+                document.getElementById('ticket-seat').textContent = trip.seat;
+                document.getElementById('ticket-gate').textContent = trip.gate;
+                document.getElementById('ticket-status').textContent = trip.status;
+                
+                // Generate QR code for ticket
+                const ticketQrElement = document.getElementById('ticket-qr');
+                ticketQrElement.innerHTML = ''; // Clear previous QR code
+                new QRCode(ticketQrElement, {
+                    text: `MOCC Flight Ticket\nBooking ID: ${trip.id}\nPassenger: ${trip.passengerName}\nFlight: ${trip.flightNumber}\nFrom: ${trip.from}\nTo: ${trip.to}\nDeparture: ${trip.departure}`,
+                    width: 150,
+                    height: 150
+                });
+                
+                // Show the modal
+                showModal('ticket-modal');
+            }
+
+            // Display user trips with admin code section
+            function displayUserTrips() {
+                const tripsContainer = document.getElementById('trips-container');
+                const adminCodeSection = document.getElementById('admin-code-section');
+                tripsContainer.innerHTML = '';
+                
+                // Show admin code section if user has trips with pending payment
+                const hasPendingPayments = userTrips.some(trip => 
+                    trip.userEmail === currentUser?.email && trip.status === 'Pending Payment'
+                );
+                
+                adminCodeSection.style.display = hasPendingPayments ? 'block' : 'none';
+                document.getElementById('code-feedback').style.display = 'none';
+                
+                // Get trips for current user (excluding cancelled ones)
+                const userTripList = userTrips.filter(trip => 
+                    trip.userEmail === currentUser?.email && trip.status !== 'Cancelled'
+                );
+                
+                if (userTripList.length === 0) {
+                    tripsContainer.innerHTML = '<p>You have no upcoming trips. Book a flight to get started!</p>';
+                    return;
+                }
+                
+                userTripList.forEach(trip => {
+                    const tripCard = document.createElement('div');
+                    tripCard.className = 'trip-card';
+                    
+                    const statusClass = trip.status === 'Confirmed' ? 'status-confirmed' : 
+                                      trip.status === 'Pending Payment' ? 'status-pending' : 'status-cancelled';
+                    
+                    tripCard.innerHTML = `
+                        <div class="trip-header">
+                            <span class="trip-id">Booking #${trip.id}</span>
+                            <span class="trip-date">Booked on ${trip.date}</span>
+                        </div>
+                        <div class="trip-details">
+                            <div class="trip-flight">
+                                <h3>${trip.from} to ${trip.to}</h3>
+                                <p><strong>Passenger:</strong> ${trip.passengerName}</p>
+                                <p><strong>Departure:</strong> ${trip.departure}</p>
+                                ${trip.return ? `<p><strong>Return:</strong> ${trip.return}</p>` : ''}
+                                <p><strong>Passengers:</strong> ${trip.passengers === '1' ? '1 Adult' : 
+                                    trip.passengers === '2' ? '2 Adults' : 
+                                    trip.passengers === '3' ? '3 Adults' : 
+                                    trip.passengers === '4' ? '4 Adults' : 'Family (2 Adults, 2 Children)'}</p>
+                                <p><strong>Class:</strong> ${trip.class === 'economy' ? 'Economy' : 
+                                    trip.class === 'premium' ? 'Premium Economy' : 
+                                    trip.class === 'business' ? 'Business' : 'First Class'}</p>
+                            </div>
+                            <div class="trip-flight">
+                                <h3>Flight Details</h3>
+                                <p><strong>Airline:</strong> ${trip.airline}</p>
+                                <p><strong>Flight Number:</strong> ${trip.flightNumber}</p>
+                                <p><strong>Status:</strong> <span class="trip-status ${statusClass}">${trip.status}</span></p>
+                                <p><strong>Seat:</strong> ${trip.seat}</p>
+                                <p><strong>Gate:</strong> ${trip.gate}</p>
+                                <p><strong>Total:</strong> $${trip.price.toFixed(2)}</p>
+                                ${trip.paymentMethod ? `<p><strong>Payment Method:</strong> ${trip.paymentMethod}</p>` : ''}
+                                ${trip.paymentDate ? `<p><strong>Payment Date:</strong> ${trip.paymentDate}</p>` : ''}
+                                ${trip.transactionId ? `<p><strong>Transaction ID:</strong> ${trip.transactionId}</p>` : ''}
+                            </div>
+                        </div>
+                        <div class="trip-actions">
+                            ${trip.status === 'Pending Payment' ? 
+                              `<button class="trip-btn pay-btn" data-id="${trip.id}">Pay Now</button>` : ''}
+                            ${trip.status === 'Confirmed' ? 
+                              `<button class="trip-btn ticket-btn" data-id="${trip.id}">View Ticket</button>` : ''}
+                            <button class="trip-btn cancel-btn" data-id="${trip.id}">Cancel Booking</button>
+                        </div>
+                    `;
+                    
+                    tripsContainer.appendChild(tripCard);
+                });
+                
+                // Add event listeners to pay buttons
+                document.querySelectorAll('.pay-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tripId = this.dataset.id;
+                        const trip = userTrips.find(t => t.id === tripId);
+                        if (trip) {
+                            showPaymentModal(trip);
+                        }
+                    });
+                });
+                
+                // Add event listeners to ticket buttons
+                document.querySelectorAll('.ticket-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tripId = this.dataset.id;
+                        const trip = userTrips.find(t => t.id === tripId);
+                        if (trip) {
+                            showTicket(trip);
+                        }
+                    });
+                });
+                
+                // Add event listeners to cancel buttons
+                document.querySelectorAll('.cancel-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const tripId = this.dataset.id;
+                        if (confirm('Are you sure you want to cancel this booking?')) {
+                            // Remove the trip from the array
+                            userTrips = userTrips.filter(t => t.id !== tripId);
+                            localStorage.setItem('mocc_trips', JSON.stringify(userTrips));
+                            displayUserTrips();
+                        }
+                    });
+                });
+            }
+
+            // Sort flights function
+            function sortFlights(sortBy) {
+                const resultsContainer = document.getElementById('results-container');
+                const flightCards = Array.from(resultsContainer.children);
+                
+                flightCards.sort((a, b) => {
+                    const aValue = a.dataset[sortBy.split('-')[0]];
+                    const bValue = b.dataset[sortBy.split('-')[0]];
+                    
+                    if (sortBy === 'price-asc') return parseFloat(aValue) - parseFloat(bValue);
+                    if (sortBy === 'price-desc') return parseFloat(bValue) - parseFloat(aValue);
+                    if (sortBy === 'duration-asc') return parseInt(aValue) - parseInt(bValue);
+                    if (sortBy === 'departure-asc') return parseInt(aValue) - parseInt(bValue);
+                    
+                    return 0;
+                });
+                
+                // Clear and re-append sorted flights
+                resultsContainer.innerHTML = '';
+                flightCards.forEach(card => resultsContainer.appendChild(card));
+            }
+
+            // Filter flights function
+            function filterFlights() {
+                const stopsFilters = Array.from(document.querySelectorAll('input[name="stops"]:checked')).map(el => el.value);
+                const airlineFilters = Array.from(document.querySelectorAll('input[name="airline"]:checked')).map(el => el.value);
+                
+                document.querySelectorAll('.flight-card').forEach(card => {
+                    const stops = card.dataset.stops;
+                    const airline = card.dataset.airline;
+                    
+                    const showCard = stopsFilters.includes(stops) && airlineFilters.includes(airline);
+                    card.style.display = showCard ? 'flex' : 'none';
+                });
+            }
+
+            // Function to verify Bitcoin transaction using Blockstream API
+            async function verifyBitcoinTransaction(address, txid) {
+                // First, get the transaction details
+                const txResponse = await fetch(`https://blockstream.info/api/tx/${txid}`);
+                if (!txResponse.ok) {
+                    throw new Error('Transaction not found');
+                }
+                
+                const txData = await txResponse.json();
+                
+                // Check if transaction is confirmed (has at least 1 confirmation)
+                if (txData.status.confirmed === false) {
+                    throw new Error('Transaction not yet confirmed');
+                }
+                
+                // Find any output that matches our address
+                const output = txData.vout.find(vout => 
+                    vout.scriptpubkey_address === address
+                );
+                
+                if (!output) {
+                    throw new Error('No output found for this address');
+                }
+                
+                return true;
+            }
+        });
+    </script>
+</body>
+</html>
